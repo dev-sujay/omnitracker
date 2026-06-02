@@ -1,5 +1,5 @@
 import { sql, and, eq, gte, lte, count, countDistinct, avg, max, desc, inArray } from 'drizzle-orm';
-import { PgDatabase, QueryResultHKT } from 'drizzle-orm/pg-core';
+import { PgDatabase, PgQueryResultHKT } from 'drizzle-orm/pg-core';
 import {
   SiteVisitPayload,
   SessionSummaryPayload,
@@ -17,7 +17,7 @@ import {
 } from '../types.js';
 import { siteVisitsTable, sessionSummariesTable } from '../schema/drizzle-tables.js';
 
-type AnyPgDb = PgDatabase<QueryResultHKT, Record<string, unknown>>;
+type AnyPgDb = PgDatabase<PgQueryResultHKT, Record<string, unknown>>;
 
 export interface DrizzleTrackerStorageOptions {
   /** Override the default site_visits table (bring your own Drizzle table) */
@@ -41,15 +41,19 @@ export interface DrizzleTrackerStorageOptions {
  *   sessionSummariesTable: mySessionSummaries,
  * })
  */
-export class DrizzleTrackerStorage implements FullTrackerStorage {
-  private db: AnyPgDb;
+export class DrizzleTrackerStorage<TDatabase extends { select: Function; insert: Function; update: Function; execute: Function } = AnyPgDb> implements FullTrackerStorage {
+  private _db: TDatabase;
   private sv: typeof siteVisitsTable;
   private ss: typeof sessionSummariesTable;
 
-  constructor(db: AnyPgDb, options?: DrizzleTrackerStorageOptions) {
-    this.db = db;
+  constructor(db: TDatabase, options?: DrizzleTrackerStorageOptions) {
+    this._db = db;
     this.sv = options?.siteVisitsTable ?? siteVisitsTable;
     this.ss = options?.sessionSummariesTable ?? sessionSummariesTable;
+  }
+
+  private get db(): AnyPgDb {
+    return this._db as never as AnyPgDb;
   }
 
   // ─── WRITE METHODS ────────────────────────────────────────────────────────

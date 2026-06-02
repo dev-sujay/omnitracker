@@ -82,7 +82,7 @@ export function createTrackerRouter(config: TrackerRouterConfig): Router {
     rawBodyParser,
     async (req: Request, res: Response): Promise<Response> => {
       try {
-        const { sessionId } = req.params;
+        const sessionId = req.params.sessionId as string;
         const buffer = req.body as Buffer;
 
         if (!config.replayStorage) {
@@ -112,7 +112,7 @@ export function createTrackerRouter(config: TrackerRouterConfig): Router {
     '/session-replay/:sessionId',
     async (req: Request, res: Response): Promise<Response> => {
       try {
-        const { sessionId } = req.params;
+        const sessionId = req.params.sessionId as string;
 
         if (!config.replayStorage) {
           return res.status(500).json({ success: false, error: 'Replay storage is not configured' });

@@ -80,7 +80,7 @@ export function createAdminRouter(config: AdminRouterConfig): Router {
   if (isEnabled('sessionJourney')) {
     router.get('/sessions/:sessionId/journey', ...mw('sessionJourney'), async (req: Request, res: Response): Promise<Response> => {
       try {
-        const { sessionId } = req.params;
+        const sessionId = req.params.sessionId as string;
         const journey = await storage.getSessionJourney(sessionId);
         return res.json({ success: true, data: journey });
       } catch (err) {
@@ -97,7 +97,7 @@ export function createAdminRouter(config: AdminRouterConfig): Router {
         if (!replayStorage) {
           return res.status(501).json({ success: false, error: 'Replay storage is not configured' });
         }
-        const { sessionId } = req.params;
+        const sessionId = req.params.sessionId as string;
         const summary = await storage.getSessionSummary(sessionId);
         if (!summary?.recording_key) {
           return res.status(404).json({ success: false, error: 'No recording found for this session' });

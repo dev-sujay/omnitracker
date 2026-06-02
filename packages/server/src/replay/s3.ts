@@ -24,13 +24,13 @@ import { ReplayStorage } from '../types.js';
  *   prefix: 'session_replays/prod',
  * })
  */
-export class S3ReplayStorage implements ReplayStorage {
-  private s3Client: S3Client;
+export class S3ReplayStorage<TS3Client extends { send: Function } = S3Client> implements ReplayStorage {
+  private _s3Client: TS3Client | S3Client;
   private bucket: string;
   private prefix: string;
 
   constructor(config: {
-    s3Client?: S3Client;
+    s3Client?: TS3Client;
     bucket: string;
     prefix?: string;
     region?: string;
@@ -39,13 +39,17 @@ export class S3ReplayStorage implements ReplayStorage {
   }) {
     this.bucket = config.bucket;
     this.prefix = config.prefix ?? 'session_replays';
-    this.s3Client =
+    this._s3Client =
       config.s3Client ??
       new S3Client({
         region: config.region ?? 'us-east-1',
         endpoint: config.endpoint,
         credentials: config.credentials,
       });
+  }
+
+  private get s3Client(): S3Client {
+    return this._s3Client as S3Client;
   }
 
   public async uploadChunk(sessionId: string, chunkFileName: string, buffer: Buffer): Promise<string> {
