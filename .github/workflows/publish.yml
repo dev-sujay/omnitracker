@@ -37,19 +37,19 @@ jobs:
           npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
           
           echo "Publishing @dev-sujay/tracker-core..."
-          cd packages/core && npm publish || true
+          cd packages/core && npm publish --access public
           
           echo "Publishing @dev-sujay/tracker-server..."
-          cd ../server && npm publish || true
+          cd ../server && npm publish --access public
           
           echo "Publishing @dev-sujay/tracker-extension-scroll..."
-          cd ../extension-scroll && npm publish || true
+          cd ../extension-scroll && npm publish --access public
           
           echo "Publishing @dev-sujay/tracker-extension-rage-click..."
-          cd ../extension-rage-click && npm publish || true
+          cd ../extension-rage-click && npm publish --access public
           
           echo "Publishing @dev-sujay/tracker-extension-replay..."
-          cd ../extension-replay && npm publish || true
+          cd ../extension-replay && npm publish --access public
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
