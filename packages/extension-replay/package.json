@@ -1,0 +1,33 @@
+{
+  "name": "@dev-sujay/tracker-extension-replay",
+  "version": "1.0.0",
+  "description": "Session replay recording plugin for @dev-sujay/tracker-core using rrweb & pako",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "analytics",
+    "tracker",
+    "session-replay",
+    "replay",
+    "rrweb",
+    "extension"
+  ],
+  "author": "Sujay",
+  "license": "MIT",
+  "peerDependencies": {
+    "@dev-sujay/tracker-core": "^1.0.0"
+  },
+  "dependencies": {
+    "pako": "^2.1.0",
+    "rrweb": "^2.0.0-alpha.11"
+  },
+  "devDependencies": {
+    "@types/pako": "^2.0.3",
+    "typescript": "^5.3.3"
+  }
+}

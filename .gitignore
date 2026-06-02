@@ -1,0 +1,29 @@
+# Dependency directories
+node_modules/
+**/node_modules/
+
+# TS build info
+*.tsbuildinfo
+**/tsconfig.tsbuildinfo
+
+# Package build outputs
+packages/*/dist/
+examples/*/dist/
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+examples/nextjs-app-router/.next/
+
+# Local databases and tracking test outputs
+local_replays_store/
+replays/
+replays_storage/
+local_replays_store/
+.env
+.env.local
+.env.*.local
+local_replays_store/
+examples/express-server/local_replays_store/
+
+# OS Metadata
+.DS_Store
+Thumbs.db

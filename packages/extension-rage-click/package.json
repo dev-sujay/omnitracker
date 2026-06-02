@@ -1,0 +1,27 @@
+{
+  "name": "@dev-sujay/tracker-extension-rage-click",
+  "version": "1.0.0",
+  "description": "Rage click detection plugin for @dev-sujay/tracker-core",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "analytics",
+    "tracker",
+    "rageclick",
+    "rageclicks",
+    "extension"
+  ],
+  "author": "Sujay",
+  "license": "MIT",
+  "peerDependencies": {
+    "@dev-sujay/tracker-core": "^1.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
