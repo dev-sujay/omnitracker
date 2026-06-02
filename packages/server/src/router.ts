@@ -1,8 +1,7 @@
 import express, { Router, Request, Response, NextFunction } from 'express';
 import * as zlib from 'zlib';
 import { Readable } from 'stream';
-import { TrackerStorage, SiteVisitPayload } from './storage.js';
-import { ReplayStorage } from './replay-storage.js';
+import { TrackerStorage, SiteVisitPayload, ReplayStorage } from './types.js';
 import { isBot, getUserAgent } from './bot-filter.js';
 
 export interface TrackerRouterConfig {
