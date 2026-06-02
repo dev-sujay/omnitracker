@@ -1,6 +1,6 @@
 {
   "name": "@dev-sujay/omnitracker-extension-replay",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Session replay recording plugin for @dev-sujay/omnitracker using rrweb & pako",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -20,7 +20,7 @@
   "author": "Sujay",
   "license": "MIT",
   "peerDependencies": {
-    "@dev-sujay/omnitracker": "^1.0.0"
+    "@dev-sujay/omnitracker": "^1.0.1"
   },
   "dependencies": {
     "pako": "^2.1.0",
