@@ -1,5 +1,5 @@
 {
-  "name": "@dev-sujay/tracker-core",
+  "name": "@dev-sujay/omnitracker",
   "version": "1.0.0",
   "description": "Lightweight client-side analytics and visitor tracking SDK core",
   "main": "dist/index.js",

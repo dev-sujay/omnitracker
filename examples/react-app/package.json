@@ -8,10 +8,10 @@
     "build": "tsc && vite build"
   },
   "dependencies": {
-    "@dev-sujay/tracker-core": "workspace:*",
-    "@dev-sujay/tracker-extension-scroll": "workspace:*",
-    "@dev-sujay/tracker-extension-rage-click": "workspace:*",
-    "@dev-sujay/tracker-extension-replay": "workspace:*",
+    "@dev-sujay/omnitracker": "workspace:*",
+    "@dev-sujay/omnitracker-extension-scroll": "workspace:*",
+    "@dev-sujay/omnitracker-extension-rage-click": "workspace:*",
+    "@dev-sujay/omnitracker-extension-replay": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

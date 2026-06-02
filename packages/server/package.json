@@ -1,5 +1,5 @@
 {
-  "name": "@dev-sujay/tracker-server",
+  "name": "@dev-sujay/omnitracker-server",
   "version": "1.0.0",
   "description": "Express router, uploader, database interfaces, and bot filter utilities for tracking site-visits and session replays",
   "main": "dist/index.js",

@@ -1,6 +1,6 @@
 # Backend Server SDK
 
-The backend server package `@dev-sujay/tracker-server` provides Express router endpoints, geo location helpers, and bot filtering utility guards.
+The backend server package `@dev-sujay/omnitracker-server` provides Express router endpoints, geo location helpers, and bot filtering utility guards.
 
 ---
 
@@ -9,7 +9,7 @@ The backend server package `@dev-sujay/tracker-server` provides Express router e
 Generate the tracking Express router by passing configuration details:
 
 ```typescript
-import { createTrackerRouter } from '@dev-sujay/tracker-server';
+import { createTrackerRouter } from '@dev-sujay/omnitracker-server';
 
 const router = createTrackerRouter({
   storage,
@@ -33,11 +33,11 @@ const router = createTrackerRouter({
 You can set up your database tables automatically (if using Drizzle ORM) or manually (using raw SQL).
 
 ### Method A: Automated Setup (Drizzle ORM)
-If you are using Drizzle ORM in your backend project, you do not need to write SQL. Simply import the schemas from `@dev-sujay/tracker-server` and register them in your database schema file:
+If you are using Drizzle ORM in your backend project, you do not need to write SQL. Simply import the schemas from `@dev-sujay/omnitracker-server` and register them in your database schema file:
 
 1. Import and export the tables in your Drizzle schema entry point (e.g. `src/db/schema.ts`):
    ```typescript
-   export { siteVisitsSchema, sessionSummariesSchema } from '@dev-sujay/tracker-server';
+   export { siteVisitsSchema, sessionSummariesSchema } from '@dev-sujay/omnitracker-server';
    ```
 
 2. Run Drizzle Kit to automatically generate and execute migrations:

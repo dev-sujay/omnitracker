@@ -1,4 +1,4 @@
-import { TrackerPlugin, ITrackerCore } from '@dev-sujay/tracker-core';
+import { TrackerPlugin, ITrackerCore } from '@dev-sujay/omnitracker';
 
 export class ScrollTrackingExtension implements TrackerPlugin {
   public readonly name = 'scroll-depth';

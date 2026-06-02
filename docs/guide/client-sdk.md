@@ -1,6 +1,6 @@
 # Client Core SDK
 
-The client SDK consists of `@dev-sujay/tracker-core` and its companion extensions.
+The client SDK consists of `@dev-sujay/omnitracker` and its companion extensions.
 
 ---
 

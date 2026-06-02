@@ -36,19 +36,19 @@ jobs:
         run: |
           npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
           
-          echo "Publishing @dev-sujay/tracker-core..."
+          echo "Publishing @dev-sujay/omnitracker..."
           cd packages/core && npm publish --access public
           
-          echo "Publishing @dev-sujay/tracker-server..."
+          echo "Publishing @dev-sujay/omnitracker-server..."
           cd ../server && npm publish --access public
           
-          echo "Publishing @dev-sujay/tracker-extension-scroll..."
+          echo "Publishing @dev-sujay/omnitracker-extension-scroll..."
           cd ../extension-scroll && npm publish --access public
           
-          echo "Publishing @dev-sujay/tracker-extension-rage-click..."
+          echo "Publishing @dev-sujay/omnitracker-extension-rage-click..."
           cd ../extension-rage-click && npm publish --access public
           
-          echo "Publishing @dev-sujay/tracker-extension-replay..."
+          echo "Publishing @dev-sujay/omnitracker-extension-replay..."
           cd ../extension-replay && npm publish --access public
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

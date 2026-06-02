@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
-import { TrackerCore, ITrackerCore } from '@dev-sujay/tracker-core';
-import { ScrollTrackingExtension } from '@dev-sujay/tracker-extension-scroll';
-import { RageClickExtension } from '@dev-sujay/tracker-extension-rage-click';
-import { SessionReplayExtension } from '@dev-sujay/tracker-extension-replay';
+import { TrackerCore, ITrackerCore } from '@dev-sujay/omnitracker';
+import { ScrollTrackingExtension } from '@dev-sujay/omnitracker-extension-scroll';
+import { RageClickExtension } from '@dev-sujay/omnitracker-extension-rage-click';
+import { SessionReplayExtension } from '@dev-sujay/omnitracker-extension-replay';
 
 // Declare global window expansion type-safely
 declare global {

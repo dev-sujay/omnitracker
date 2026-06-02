@@ -4,7 +4,7 @@ import {
   createTrackerRouter,
   MemoryTrackerStorage,
   LocalFileReplayStorage,
-} from '@dev-sujay/tracker-server';
+} from '@dev-sujay/omnitracker-server';
 
 const app = express();
 const PORT = 5000;

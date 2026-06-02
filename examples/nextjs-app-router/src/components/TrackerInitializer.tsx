@@ -2,10 +2,10 @@
 
 import { useEffect, useRef } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { TrackerCore, ITrackerCore } from '@dev-sujay/tracker-core';
-import { ScrollTrackingExtension } from '@dev-sujay/tracker-extension-scroll';
-import { RageClickExtension } from '@dev-sujay/tracker-extension-rage-click';
-import { SessionReplayExtension } from '@dev-sujay/tracker-extension-replay';
+import { TrackerCore, ITrackerCore } from '@dev-sujay/omnitracker';
+import { ScrollTrackingExtension } from '@dev-sujay/omnitracker-extension-scroll';
+import { RageClickExtension } from '@dev-sujay/omnitracker-extension-rage-click';
+import { SessionReplayExtension } from '@dev-sujay/omnitracker-extension-replay';
 
 declare global {
   interface Window {

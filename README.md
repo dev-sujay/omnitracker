@@ -27,11 +27,11 @@ Designed from the ground up for minimal bundle impact: developers install a ligh
 
 | Package | Directory | Description |
 | :--- | :--- | :--- |
-| **`@dev-sujay/tracker-core`** | [`packages/core`](file:///C:/Users/HP/Desktop/TLH/Tracking/packages/core) | Core event engine, offline queue, and plugin system. |
-| **`@dev-sujay/tracker-extension-scroll`** | [`packages/extension-scroll`](file:///C:/Users/HP/Desktop/TLH/Tracking/packages/extension-scroll) | Scroll depth tracking plugin. |
-| **`@dev-sujay/tracker-extension-rage-click`** | [`packages/extension-rage-click`](file:///C:/Users/HP/Desktop/TLH/Tracking/packages/extension-rage-click) | Rage click detector plugin. |
-| **`@dev-sujay/tracker-extension-replay`** | [`packages/extension-replay`](file:///C:/Users/HP/Desktop/TLH/Tracking/packages/extension-replay) | rrweb-based screen recording plugin. |
-| **`@dev-sujay/tracker-server`** | [`packages/server`](file:///C:/Users/HP/Desktop/TLH/Tracking/packages/server) | Express router, storage adapters, and bot filters. |
+| **`@dev-sujay/omnitracker`** | [`packages/core`](file:///C:/Users/HP/Desktop/TLH/Tracking/packages/core) | Core event engine, offline queue, and plugin system. |
+| **`@dev-sujay/omnitracker-extension-scroll`** | [`packages/extension-scroll`](file:///C:/Users/HP/Desktop/TLH/Tracking/packages/extension-scroll) | Scroll depth tracking plugin. |
+| **`@dev-sujay/omnitracker-extension-rage-click`** | [`packages/extension-rage-click`](file:///C:/Users/HP/Desktop/TLH/Tracking/packages/extension-rage-click) | Rage click detector plugin. |
+| **`@dev-sujay/omnitracker-extension-replay`** | [`packages/extension-replay`](file:///C:/Users/HP/Desktop/TLH/Tracking/packages/extension-replay) | rrweb-based screen recording plugin. |
+| **`@dev-sujay/omnitracker-server`** | [`packages/server`](file:///C:/Users/HP/Desktop/TLH/Tracking/packages/server) | Express router, storage adapters, and bot filters. |
 
 ---
 
@@ -57,14 +57,14 @@ Designed from the ground up for minimal bundle impact: developers install a ligh
 
 Install core and desired extension plugins:
 ```bash
-bun add @dev-sujay/tracker-core @dev-sujay/tracker-extension-scroll @dev-sujay/tracker-extension-replay
+bun add @dev-sujay/omnitracker @dev-sujay/omnitracker-extension-scroll @dev-sujay/omnitracker-extension-replay
 ```
 
 Initialize inside your frontend application:
 ```typescript
-import { TrackerCore } from '@dev-sujay/tracker-core';
-import { ScrollTrackingExtension } from '@dev-sujay/tracker-extension-scroll';
-import { SessionReplayExtension } from '@dev-sujay/tracker-extension-replay';
+import { TrackerCore } from '@dev-sujay/omnitracker';
+import { ScrollTrackingExtension } from '@dev-sujay/omnitracker-extension-scroll';
+import { SessionReplayExtension } from '@dev-sujay/omnitracker-extension-replay';
 
 const tracker = new TrackerCore({
   apiUrl: 'http://localhost:5000/api',
@@ -83,13 +83,13 @@ tracker.init();
 
 Install the backend server package:
 ```bash
-bun add @dev-sujay/tracker-server express
+bun add @dev-sujay/omnitracker-server express
 ```
 
 Set up an Express router:
 ```typescript
 import express from 'express';
-import { createTrackerRouter, MemoryTrackerStorage, LocalFileReplayStorage } from '@dev-sujay/tracker-server';
+import { createTrackerRouter, MemoryTrackerStorage, LocalFileReplayStorage } from '@dev-sujay/omnitracker-server';
 
 const app = express();
 
@@ -111,7 +111,7 @@ OmniTracker requires two database tables: `site_visits` and `session_summaries`.
 * **Option A: Drizzle ORM (Automated)**:
   Import and export the tables in your Drizzle schema file and run drizzle migrations:
   ```typescript
-  export { siteVisitsSchema, sessionSummariesSchema } from '@dev-sujay/tracker-server';
+  export { siteVisitsSchema, sessionSummariesSchema } from '@dev-sujay/omnitracker-server';
   ```
   ```bash
   npx drizzle-kit generate:pg && npx drizzle-kit push:pg

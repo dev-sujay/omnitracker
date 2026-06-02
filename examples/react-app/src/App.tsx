@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ITrackerCore } from '@dev-sujay/tracker-core';
+import { ITrackerCore } from '@dev-sujay/omnitracker';
 
 declare global {
   interface Window {

@@ -9,7 +9,7 @@ You can customize where tracking events and session replays are stored by implem
 Implement the `TrackerStorage` interface to save visits to Prisma, Knex, MongoDB, or any other DB tool.
 
 ```typescript
-import { TrackerStorage, SiteVisitPayload, SessionSummaryPayload } from '@dev-sujay/tracker-server';
+import { TrackerStorage, SiteVisitPayload, SessionSummaryPayload } from '@dev-sujay/omnitracker-server';
 
 export class PrismaTrackerStorage implements TrackerStorage {
   constructor(private prismaClient: any) {}
@@ -68,7 +68,7 @@ export class PrismaTrackerStorage implements TrackerStorage {
 Implement the `ReplayStorage` interface to upload session recording files to Google Cloud Storage (GCS), Azure Blobs, or a private Minio server.
 
 ```typescript
-import { ReplayStorage } from '@dev-sujay/tracker-server';
+import { ReplayStorage } from '@dev-sujay/omnitracker-server';
 import { Storage } from '@google-cloud/storage';
 
 export class GcsReplayStorage implements ReplayStorage {

@@ -1,4 +1,4 @@
-import { TrackerPlugin, ITrackerCore } from '@dev-sujay/tracker-core';
+import { TrackerPlugin, ITrackerCore } from '@dev-sujay/omnitracker';
 import { record } from 'rrweb';
 import pako from 'pako';
 
