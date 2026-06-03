@@ -1,4 +1,4 @@
-import express, { Router, Request, Response, NextFunction } from 'express';
+import express, { Router, Request, Response, NextFunction, RequestHandler } from 'express';
 import * as zlib from 'zlib';
 import { Readable } from 'stream';
 import { TrackerStorage, SiteVisitPayload, ReplayStorage } from './types.js';
@@ -9,6 +9,9 @@ export interface TrackerRouterConfig {
   replayStorage?: ReplayStorage;
   resolveCountry?: (ip: string) => string | null | Promise<string | null>;
   rateLimitMiddleware?: (req: Request, res: Response, next: NextFunction) => void;
+  trackingAuthMiddleware?: RequestHandler[];
+  replayAuthMiddleware?: RequestHandler[];
+  enrichCustomerId?: (req: Request) => string | number | null | undefined | Promise<string | number | null | undefined>;
 }
 
 export function createTrackerRouter(config: TrackerRouterConfig): Router {
@@ -18,6 +21,7 @@ export function createTrackerRouter(config: TrackerRouterConfig): Router {
   // 1. Event Tracking Endpoint
   router.post(
     '/track-site-visit',
+    ...(config.trackingAuthMiddleware ?? []),
     config.rateLimitMiddleware || ((req, res, next) => next()),
     async (req: Request, res: Response): Promise<Response> => {
       try {
@@ -42,6 +46,18 @@ export function createTrackerRouter(config: TrackerRouterConfig): Router {
 
         const body = req.body as Partial<SiteVisitPayload>;
 
+        let enrichedCustomerId = body.customerId ?? null;
+        if (config.enrichCustomerId) {
+          try {
+            const resId = await config.enrichCustomerId(req);
+            if (resId !== null && resId !== undefined) {
+              enrichedCustomerId = String(resId);
+            }
+          } catch (e) {
+            // Ignore enrichment errors
+          }
+        }
+
         const data: SiteVisitPayload = {
           sessionId: body.sessionId || '',
           visitorId: body.visitorId ?? null,
@@ -61,7 +77,7 @@ export function createTrackerRouter(config: TrackerRouterConfig): Router {
           metadata: body.metadata ?? null,
           timeOnPage: body.timeOnPage ?? null,
           scrollDepth: body.scrollDepth ?? null,
-          customerId: body.customerId ?? null,
+          customerId: enrichedCustomerId,
           ipAddress: clientIp,
           country: country || body.country || null,
         };
@@ -110,6 +126,7 @@ export function createTrackerRouter(config: TrackerRouterConfig): Router {
   // 3. List Session Replay Chunks
   router.get(
     '/session-replay/:sessionId',
+    ...(config.replayAuthMiddleware ?? []),
     async (req: Request, res: Response): Promise<Response> => {
       try {
         const sessionId = req.params.sessionId as string;
@@ -142,6 +159,7 @@ export function createTrackerRouter(config: TrackerRouterConfig): Router {
   // 4. Retrieve and Gunzip a Single Replay Chunk on-the-fly
   router.get(
     '/session-replay/chunk',
+    ...(config.replayAuthMiddleware ?? []),
     async (req: Request, res: Response): Promise<Response | void> => {
       try {
         const { key } = req.query;

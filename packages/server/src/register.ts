@@ -1,4 +1,4 @@
-import { Express } from 'express';
+import { Express, Router } from 'express';
 import { createTrackerRouter, TrackerRouterConfig } from './router.js';
 import { createAdminRouter } from './admin/router.js';
 import { AdminRouterConfig } from './admin/types.js';
@@ -39,6 +39,12 @@ export interface RegisterOmniTrackerConfig extends TrackerRouterConfig {
      * }
      */
     routes?: AdminRouterConfig['routes'];
+
+    // E-commerce callback resolvers
+    resolveCustomerInfo?: AdminRouterConfig['resolveCustomerInfo'];
+    getSessionIdFromOrderId?: AdminRouterConfig['getSessionIdFromOrderId'];
+    resolveSessions?: AdminRouterConfig['resolveSessions'];
+    exportSessions?: AdminRouterConfig['exportSessions'];
   };
   /**
    * URL prefix for the public tracker events router.
@@ -50,40 +56,18 @@ export interface RegisterOmniTrackerConfig extends TrackerRouterConfig {
 /**
  * registerOmniTracker
  *
- * One-liner to mount the full OmniTracker stack on your Express app.
+ * One-liner to mount the full OmniTracker stack on your Express app or Router.
  * This replaces all custom analytics route code in your app.
- *
- * @example
- * import { registerOmniTracker, DrizzleTrackerStorage, S3ReplayStorage } from '@dev-sujay/omnitracker-server'
- *
- * registerOmniTracker(app, {
- *   storage: new DrizzleTrackerStorage(db),
- *   replayStorage: new S3ReplayStorage({ bucket: process.env.AWS_S3_BUCKET! }),
- *   resolveCountry: (ip) => getLocationFromIP(ip),
- *   rateLimitMiddleware: trackingLimiter,
- *   adminRoutes: {
- *     prefix: '/admin/analytics',
- *     globalMiddleware: [jwtMiddleware],
- *     routes: {
- *       sessions:      { middleware: [PermissionMiddleware.check('analytics', 'read')] },
- *       summary:       { middleware: [PermissionMiddleware.check('analytics', 'read')] },
- *       devices:       { middleware: [PermissionMiddleware.check('analytics', 'read')] },
- *       topPages:      { middleware: [PermissionMiddleware.check('analytics', 'read')] },
- *       funnel:        { middleware: [PermissionMiddleware.check('analytics', 'read')] },
- *       utm:           { middleware: [PermissionMiddleware.check('analytics', 'read')] },
- *       live:          { middleware: [PermissionMiddleware.check('analytics', 'read')] },
- *       sessionJourney:{ middleware: [PermissionMiddleware.check('analytics', 'read')] },
- *       sessionReplay: { middleware: [PermissionMiddleware.check('analytics', 'read')] },
- *     },
- *   },
- * })
  */
-export function registerOmniTracker(app: Express, config: RegisterOmniTrackerConfig): void {
+export function registerOmniTracker(app: Express | Router, config: RegisterOmniTrackerConfig): void {
   const {
     storage,
     replayStorage,
     resolveCountry,
     rateLimitMiddleware,
+    trackingAuthMiddleware,
+    replayAuthMiddleware,
+    enrichCustomerId,
     trackerPrefix = '/',
     adminRoutes,
   } = config;
@@ -94,8 +78,11 @@ export function registerOmniTracker(app: Express, config: RegisterOmniTrackerCon
     replayStorage,
     resolveCountry,
     rateLimitMiddleware,
+    trackingAuthMiddleware,
+    replayAuthMiddleware,
+    enrichCustomerId,
   });
-  app.use(trackerPrefix, trackerRouter);
+  (app as Router).use(trackerPrefix, trackerRouter);
 
   // 2. Mount admin analytics router (optional)
   if (adminRoutes) {
@@ -105,7 +92,11 @@ export function registerOmniTracker(app: Express, config: RegisterOmniTrackerCon
       replayStorage,
       globalMiddleware: adminRoutes.globalMiddleware,
       routes: adminRoutes.routes,
+      resolveCustomerInfo: adminRoutes.resolveCustomerInfo,
+      getSessionIdFromOrderId: adminRoutes.getSessionIdFromOrderId,
+      resolveSessions: adminRoutes.resolveSessions,
+      exportSessions: adminRoutes.exportSessions,
     });
-    app.use(prefix, adminRouter);
+    (app as Router).use(prefix, adminRouter);
   }
 }

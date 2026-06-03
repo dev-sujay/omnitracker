@@ -1,4 +1,4 @@
-import { Router, Request, Response, RequestHandler } from 'express';
+import { Router, Request, Response, RequestHandler, NextFunction } from 'express';
 import { AdminRouterConfig, AdminRouteKey } from './types.js';
 
 /**
@@ -36,6 +36,14 @@ import { AdminRouterConfig, AdminRouteKey } from './types.js';
 export function createAdminRouter(config: AdminRouterConfig): Router {
   const router = Router();
   const { storage, replayStorage, globalMiddleware = [], routes = {} } = config;
+
+  // SSE token mapper for event stream compatibility
+  router.use((req: Request, _res: Response, next: NextFunction) => {
+    if (req.query.token && !req.headers.authorization) {
+      req.headers.authorization = `Bearer ${req.query.token}`;
+    }
+    next();
+  });
 
   /** Resolves the middleware chain for a given route key */
   function mw(key: AdminRouteKey): RequestHandler[] {
