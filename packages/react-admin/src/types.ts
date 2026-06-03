@@ -86,6 +86,9 @@ export interface SessionFilters {
   hasRecording?: boolean;
   page?: number;
   limit?: number;
+  searchTerm?: string;
+  isConverted?: boolean;
+  isLoggedIn?: boolean;
 }
 
 export interface OmniTrackerContextValue {

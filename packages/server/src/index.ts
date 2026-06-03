@@ -58,3 +58,7 @@ export type { AdminRouterConfig, AdminRouteKey, AdminRouteConfig, SessionListRes
 // ─── One-Liner Setup ──────────────────────────────────────────────────────────
 export { registerOmniTracker } from './register.js';
 export type { RegisterOmniTrackerConfig } from './register.js';
+
+// ─── Event Tracker ───────────────────────────────────────────────────────────
+export { EventTracker } from './event-tracker.js';
+

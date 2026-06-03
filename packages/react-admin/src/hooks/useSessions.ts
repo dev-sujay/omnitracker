@@ -12,12 +12,14 @@ export interface UseSessionsResult {
   loading: boolean;
   error: string | null;
   refetch(): void;
+  counts?: Record<string, number | null | undefined>;
 }
 
 export function useSessions(filters: SessionFilters = {}): UseSessionsResult {
   const { fetch } = useOmniTracker();
   const [sessions, setSessions] = useState<SessionSummary[]>([]);
   const [total, setTotal] = useState(0);
+  const [counts, setCounts] = useState<Record<string, number | null | undefined> | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [rev, setRev] = useState(0);
@@ -33,15 +35,30 @@ export function useSessions(filters: SessionFilters = {}): UseSessionsResult {
     hasRecording: filters.hasRecording,
     page: filters.page ?? 1,
     limit: filters.limit ?? 25,
+    searchTerm: filters.searchTerm,
+    isConverted: filters.isConverted,
+    isLoggedIn: filters.isLoggedIn,
   };
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
     setError(null);
-    fetch<{ sessions: SessionSummary[]; total: number }>('/sessions', params)
-      .then(({ sessions: s, total: t }) => {
-        if (!cancelled) { setSessions(s); setTotal(t); setLoading(false); }
+    fetch<{
+      sessions?: SessionSummary[];
+      total?: number;
+      result?: SessionSummary[];
+      total_count?: number;
+      counts?: Record<string, number | null | undefined>;
+    }>('/sessions', params)
+      .then((res) => {
+        if (cancelled) return;
+        const s = res.sessions ?? res.result ?? [];
+        const t = res.total ?? res.total_count ?? s.length;
+        setSessions(s);
+        setTotal(t);
+        setCounts(res.counts);
+        setLoading(false);
       })
       .catch((e: unknown) => { if (!cancelled) { setError(String(e)); setLoading(false); } });
     return () => { cancelled = true; };
@@ -56,10 +73,13 @@ export function useSessions(filters: SessionFilters = {}): UseSessionsResult {
     filters.hasRecording,
     filters.page,
     filters.limit,
+    filters.searchTerm,
+    filters.isConverted,
+    filters.isLoggedIn,
     rev,
   ]);
 
-  return { sessions, total, loading, error, refetch: () => setRev((v) => v + 1) };
+  return { sessions, total, loading, error, refetch: () => setRev((v) => v + 1), counts };
 }
 
 // ─── useSessionJourney ────────────────────────────────────────────────────────
