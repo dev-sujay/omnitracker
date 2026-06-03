@@ -1,6 +1,6 @@
 {
   "name": "@dev-sujay/omnitracker-extension-rage-click",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Rage click detection plugin for @dev-sujay/omnitracker",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -19,7 +19,7 @@
   "author": "Sujay",
   "license": "MIT",
   "peerDependencies": {
-    "@dev-sujay/omnitracker": "^1.0.4"
+    "@dev-sujay/omnitracker": "^1.0.5"
   },
   "devDependencies": {
     "typescript": "^5.3.3"
