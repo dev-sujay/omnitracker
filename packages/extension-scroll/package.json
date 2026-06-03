@@ -1,6 +1,6 @@
 {
   "name": "@dev-sujay/omnitracker-extension-scroll",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Scroll depth tracking plugin for @dev-sujay/omnitracker",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -19,7 +19,7 @@
   "author": "Sujay",
   "license": "MIT",
   "peerDependencies": {
-    "@dev-sujay/omnitracker": "^1.0.0"
+    "@dev-sujay/omnitracker": "^1.0.1"
   },
   "devDependencies": {
     "typescript": "^5.3.3"
