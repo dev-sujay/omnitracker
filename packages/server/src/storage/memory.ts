@@ -1,5 +1,6 @@
 import {
   SiteVisitPayload,
+  SiteVisitRecord,
   SessionSummaryPayload,
   FullTrackerStorage,
   DateRange,
@@ -24,14 +25,15 @@ import {
  * const storage = new MemoryTrackerStorage()
  */
 export class MemoryTrackerStorage implements FullTrackerStorage {
-  private visits: (SiteVisitPayload & { created_at: Date })[] = [];
+  private visits: (SiteVisitPayload & { id: number; created_at: Date; recording_key?: string | null })[] = [];
   private summaries: Map<string, SessionSummaryPayload> = new Map();
 
   // ─── WRITE METHODS ────────────────────────────────────────────────────────
 
   public async saveSiteVisit(data: SiteVisitPayload): Promise<void> {
     const now = new Date();
-    this.visits.push({ ...data, created_at: now });
+    const id = Math.floor(Math.random() * 1000000);
+    this.visits.push({ ...data, id, created_at: now });
 
     const existing = this.summaries.get(data.sessionId);
     if (!existing) {
@@ -117,10 +119,16 @@ export class MemoryTrackerStorage implements FullTrackerStorage {
     };
   }
 
-  public async getSessionJourney(sessionId: string): Promise<SiteVisitPayload[]> {
+  public async getSessionJourney(sessionId: string): Promise<SiteVisitRecord[]> {
     return this.visits
       .filter((v) => v.sessionId === sessionId)
-      .sort((a, b) => a.created_at.getTime() - b.created_at.getTime());
+      .sort((a, b) => a.created_at.getTime() - b.created_at.getTime())
+      .map((v) => ({
+        ...v,
+        id: v.id,
+        createdAt: v.created_at,
+        recordingKey: v.recording_key ?? null,
+      }));
   }
 
   public async getDashboardSummary(range: DateRange): Promise<DashboardSummary> {

@@ -1,5 +1,6 @@
 import {
   SiteVisitPayload,
+  SiteVisitRecord,
   SessionSummaryPayload,
   FullTrackerStorage,
   DateRange,
@@ -62,7 +63,7 @@ interface PrismaDelegate<TCreate, TUpdate, TRecord> {
   }): Promise<Record<string, unknown>[]>;
 }
 
-type SiteVisitRecord = Record<string, unknown>;
+type PrismaSiteVisitRecord = Record<string, unknown>;
 type SessionSummaryRecord = Record<string, unknown>;
 
 interface PrismaLike {
@@ -287,11 +288,11 @@ export class PrismaTrackerStorage implements FullTrackerStorage {
     };
   }
 
-  public async getSessionJourney(sessionId: string): Promise<SiteVisitPayload[]> {
+  public async getSessionJourney(sessionId: string): Promise<SiteVisitRecord[]> {
     const docs = await this.sv.findMany({
       where: { session_id: sessionId },
       orderBy: [{ created_at: 'asc' }],
-    }) as SiteVisitRecord[];
+    }) as PrismaSiteVisitRecord[];
     return docs.map((d) => this.mapSiteVisit(d));
   }
 
@@ -460,8 +461,11 @@ export class PrismaTrackerStorage implements FullTrackerStorage {
     };
   }
 
-  private mapSiteVisit(doc: Record<string, unknown>): SiteVisitPayload {
+  private mapSiteVisit(doc: Record<string, unknown>): SiteVisitRecord {
     return {
+      id: doc['id'] ? Number(doc['id']) || Math.floor(Math.random() * 1000000) : Math.floor(Math.random() * 1000000),
+      createdAt: (doc['created_at'] as Date) || new Date(),
+      recordingKey: (doc['recording_key'] as string | null) ?? null,
       sessionId: doc['session_id'] as string,
       visitorId: (doc['visitor_id'] as string | null) ?? null,
       deviceType: (doc['device_type'] as string | null) ?? null,

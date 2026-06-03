@@ -1,5 +1,6 @@
 import {
   SiteVisitPayload,
+  SiteVisitRecord,
   SessionSummaryPayload,
   FullTrackerStorage,
   DateRange,
@@ -234,7 +235,7 @@ export class MongoTrackerStorage implements FullTrackerStorage {
     return { total, sessions: docs.map((d) => this.mapSessionSummary(d)) };
   }
 
-  public async getSessionJourney(sessionId: string): Promise<SiteVisitPayload[]> {
+  public async getSessionJourney(sessionId: string): Promise<SiteVisitRecord[]> {
     const docs = await this.sv.find({ session_id: sessionId }).sort({ created_at: 1 }).toArray();
     return docs.map((d) => this.mapSiteVisit(d));
   }
@@ -415,8 +416,11 @@ export class MongoTrackerStorage implements FullTrackerStorage {
     };
   }
 
-  private mapSiteVisit(doc: Record<string, unknown>): SiteVisitPayload {
+  private mapSiteVisit(doc: Record<string, unknown>): SiteVisitRecord {
     return {
+      id: doc['_id'] ? Number(doc['_id']) || Math.floor(Math.random() * 1000000) : Math.floor(Math.random() * 1000000),
+      createdAt: (doc['created_at'] as Date) || new Date(),
+      recordingKey: (doc['recording_key'] as string | null) ?? null,
       sessionId: doc['session_id'] as string,
       visitorId: (doc['visitor_id'] as string | null) ?? null,
       deviceType: (doc['device_type'] as string | null) ?? null,

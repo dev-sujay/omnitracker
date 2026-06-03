@@ -29,6 +29,12 @@ export interface SiteVisitPayload {
   customerId?: string | null;
 }
 
+export interface SiteVisitRecord extends SiteVisitPayload {
+  id: number;
+  createdAt: Date;
+  recordingKey?: string | null;
+}
+
 export interface SessionSummaryPayload {
   session_id: string;
   visitor_id?: string | null;
@@ -128,7 +134,7 @@ export interface TrackerStorage {
 /** Read-side storage interface — implement to power analytics admin queries */
 export interface TrackerAnalyticsStorage {
   listSessions(filters: SessionFilters): Promise<{ sessions: SessionSummaryPayload[]; total: number }>;
-  getSessionJourney(sessionId: string): Promise<SiteVisitPayload[]>;
+  getSessionJourney(sessionId: string): Promise<SiteVisitRecord[]>;
   getSessionSummary(sessionId: string): Promise<SessionSummaryPayload | null>;
   getDashboardSummary(range: DateRange): Promise<DashboardSummary>;
   getDeviceBreakdown(type: 'device' | 'browser' | 'os', range: DateRange): Promise<DeviceBreakdown[]>;

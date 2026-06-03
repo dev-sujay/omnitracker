@@ -3,6 +3,7 @@ export type {
   EventType,
   VisitorType,
   SiteVisitPayload,
+  SiteVisitRecord,
   SessionSummaryPayload,
   DateRange,
   SessionFilters,
@@ -52,7 +53,7 @@ export type { TrackerRouterConfig } from './router.js';
 
 // ─── Admin Analytics Router ───────────────────────────────────────────────────
 export { createAdminRouter } from './admin/router.js';
-export type { AdminRouterConfig, AdminRouteKey, AdminRouteConfig } from './admin/types.js';
+export type { AdminRouterConfig, AdminRouteKey, AdminRouteConfig, SessionListResult, ExtendedSessionRecord } from './admin/types.js';
 
 // ─── One-Liner Setup ──────────────────────────────────────────────────────────
 export { registerOmniTracker } from './register.js';

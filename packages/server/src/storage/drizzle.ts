@@ -2,6 +2,7 @@ import { sql, and, eq, gte, lte, count, countDistinct, avg, max, desc, inArray }
 import { PgDatabase, PgQueryResultHKT } from 'drizzle-orm/pg-core';
 import {
   SiteVisitPayload,
+  SiteVisitRecord,
   SessionSummaryPayload,
   TrackerStorage,
   TrackerAnalyticsStorage,
@@ -314,7 +315,15 @@ export class DrizzleTrackerStorage<TDatabase extends { select: Function; insert:
     };
   }
 
-  public async getSessionJourney(sessionId: string): Promise<SiteVisitPayload[]> {
+  public async getSessionJourney(sessionId: string): Promise<SiteVisitRecord[]> {
+    const [summary] = await this.db
+      .select({ recording_key: this.ss.recording_key })
+      .from(this.ss)
+      .where(eq(this.ss.session_id, sessionId))
+      .limit(1);
+
+    const recordingKey = summary?.recording_key ?? null;
+
     const rows = await this.db
       .select()
       .from(this.sv)
@@ -322,6 +331,9 @@ export class DrizzleTrackerStorage<TDatabase extends { select: Function; insert:
       .orderBy(this.sv.created_at);
 
     return rows.map((row) => ({
+      id: row.id,
+      createdAt: row.created_at || new Date(),
+      recordingKey,
       sessionId: row.session_id,
       visitorId: row.visitor_id,
       deviceType: row.device_type,
