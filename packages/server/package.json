@@ -1,6 +1,6 @@
 {
   "name": "@dev-sujay/omnitracker-server",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Full-stack analytics server SDK: Express routers, admin analytics API, Drizzle/MongoDB/Prisma/Memory storage adapters, S3/R2/Local replay adapters, DB migration helpers, and registerOmniTracker one-liner setup.",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -76,9 +76,15 @@
     "@prisma/client": "^5.0.0"
   },
   "peerDependenciesMeta": {
-    "drizzle-orm": { "optional": true },
-    "mongodb": { "optional": true },
-    "@prisma/client": { "optional": true }
+    "drizzle-orm": {
+      "optional": true
+    },
+    "mongodb": {
+      "optional": true
+    },
+    "@prisma/client": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
