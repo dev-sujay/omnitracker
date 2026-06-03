@@ -1,6 +1,6 @@
 {
   "name": "@dev-sujay/omnitracker",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Lightweight client-side analytics and visitor tracking SDK core",
   "main": "dist/index.js",
   "module": "dist/index.js",

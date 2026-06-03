@@ -1,6 +1,6 @@
 {
   "name": "@dev-sujay/omnitracker-react-admin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React admin dashboard SDK for OmniTracker — sessions table, replay player, device charts, funnel, live visitor badge, and more. Zero custom code needed.",
   "main": "dist/index.js",
   "module": "dist/index.js",
